@@ -1,4 +1,4 @@
-import React from 'react';
+import {React, useState} from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -45,28 +45,28 @@ async function loginUser(credentials) {
 }
 
 
-const handleSubmit = (event) => {
-    //Prevent page reload
-    event.preventDefault();
+// const handleSubmit = (event) => {
+//     //Prevent page reload
+//     event.preventDefault();
 
-    const { uname, pass } = document.forms[0];
+//     const { uname, pass } = document.forms[0];
 
-    // Find user login info
-    const userData = database.find((user) => user.username === uname.value);
+//     // Find user login info
+//     const userData = database.find((user) => user.username === uname.value);
 
-    // Compare user info
-    if (userData) {
-      if (userData.password !== pass.value) {
-        // Invalid password
-        setErrorMessages({ name: "pass", message: errors.pass });
-      } else {
-        setIsSubmitted(true);
-      }
-    } else {
-      // Username not found
-      setErrorMessages({ name: "uname", message: errors.uname });
-    }
-  };
+//     // Compare user info
+//     if (userData) {
+//       if (userData.password !== pass.value) {
+//         // Invalid password
+//         setErrorMessages({ name: "pass", message: errors.pass });
+//       } else {
+//         setIsSubmitted(true);
+//       }
+//     } else {
+//       // Username not found
+//       setErrorMessages({ name: "uname", message: errors.uname });
+//     }
+//   };
 
 function Login() {
     const classes = useStyles();
