@@ -11,6 +11,7 @@ import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
+import { useForm } from "react-hook-form";
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -32,8 +33,46 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
+async function loginUser(credentials) {
+    return fetch('http://localhost:3001/users/login', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(credentials)
+    })
+        .then(data => data.json())
+}
+
+
+const handleSubmit = (event) => {
+    //Prevent page reload
+    event.preventDefault();
+
+    const { uname, pass } = document.forms[0];
+
+    // Find user login info
+    const userData = database.find((user) => user.username === uname.value);
+
+    // Compare user info
+    if (userData) {
+      if (userData.password !== pass.value) {
+        // Invalid password
+        setErrorMessages({ name: "pass", message: errors.pass });
+      } else {
+        setIsSubmitted(true);
+      }
+    } else {
+      // Username not found
+      setErrorMessages({ name: "uname", message: errors.uname });
+    }
+  };
+
 function Login() {
     const classes = useStyles();
+    const [username, setUserName] = useState();
+    const [password, setPassword] = useState();
+    const { handleSubmit, errors } = useForm();
 
     return (
         <Container component="main" maxWidth="xs">
@@ -42,19 +81,20 @@ function Login() {
                 <Avatar className={classes.avatar}>
                 </Avatar>
                 <Typography component="h1" variant="h5">
-                    Sign in
+                    Please Sign In
                 </Typography>
-                <form className={classes.form} noValidate>
+                <form className={classes.form} noValidate onSubmit={handleSubmit}>
                     <TextField
                         variant="outlined"
                         margin="normal"
                         required
                         fullWidth
-                        id="email"
-                        label="Email Address"
-                        name="email"
-                        autoComplete="email"
+                        id="Username"
+                        label="Username"
+                        name="Username"
+                        autoComplete="Username"
                         autoFocus
+                        onChange={e => setUserName(e.target.value)}
                     />
                     <TextField
                         variant="outlined"
@@ -65,14 +105,14 @@ function Login() {
                         label="Password"
                         type="password"
                         id="password"
-                        autoComplete="current-password"
+                        // autoComplete="current-password"
+                        onChange={e => setPassword(e.target.value)}
                     />
                     <FormControlLabel
                         control={<Checkbox value="remember" color="primary" />}
                         label="Remember me"
                     />
-                    <Button
-                        type="submit"
+                    <Button 
                         fullWidth
                         variant="contained"
                         color="primary"
