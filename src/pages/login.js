@@ -12,6 +12,7 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import axios from 'axios';
+import { useNavigate } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -60,11 +61,12 @@ const useStyles = makeStyles((theme) => ({
 //   };
 
 function Login() {
+    const navigate = useNavigate();
     const classes = useStyles();
     const [username, setUserName] = useState();
     const [password, setPassword] = useState();
 
-    const loginUser = async () => {
+    const handleSubmit = async () => {
         // return fetch('http://localhost:3001/users/login', {
         //     method: 'POST',
         //     headers: {
@@ -74,15 +76,20 @@ function Login() {
         // })
         //     .then(data => data.json())
     
-        axios.post('/users/login', {
+        axios.post('https://localhost:3001/users/login', {
             username,
             password
         })
         .then(function (response) {
-            alert(response.data);
+            if(response.status === 200){
+                localStorage.setItem('username', response.data.username);
+                localStorage.setItem('password', response.data.password);
+                localStorage.setItem('token', response.data.token);
+                navigate("/");
+            }
         })
         .catch(function (error) {
-            alert(error);
+            alert(error.response.data);
         });
     }
 
@@ -96,7 +103,7 @@ function Login() {
                 <Typography component="h1" variant="h5">
                     Please Sign In
                 </Typography>
-                <form className={classes.form} noValidate onSubmit={handleSubmit}>
+               
                     <TextField
                         variant="outlined"
                         margin="normal"
@@ -130,7 +137,7 @@ function Login() {
                         variant="contained"
                         color="primary"
                         className={classes.submit}
-                        onClick={loginUser}
+                        onClick={handleSubmit}
                     >
                         Sign In
                     </Button>
@@ -146,7 +153,7 @@ function Login() {
                             </Link>
                         </Grid>
                     </Grid>
-                </form>
+               
             </div>
             <Box mt={8}>
             </Box>
