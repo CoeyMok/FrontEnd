@@ -11,7 +11,7 @@ import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-import { useForm } from "react-hook-form";
+import axios from 'axios';
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -33,16 +33,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-async function loginUser(credentials) {
-    return fetch('http://localhost:3001/users/login', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(credentials)
-    })
-        .then(data => data.json())
-}
+
 
 
 // const handleSubmit = (event) => {
@@ -72,7 +63,29 @@ function Login() {
     const classes = useStyles();
     const [username, setUserName] = useState();
     const [password, setPassword] = useState();
-    const { handleSubmit, errors } = useForm();
+
+    const loginUser = async () => {
+        // return fetch('http://localhost:3001/users/login', {
+        //     method: 'POST',
+        //     headers: {
+        //         'Content-Type': 'application/json'
+        //     },
+        //     body: JSON.stringify(credentials)
+        // })
+        //     .then(data => data.json())
+    
+        axios.post('/users/login', {
+            username,
+            password
+        })
+        .then(function (response) {
+            alert(response.data);
+        })
+        .catch(function (error) {
+            alert(error);
+        });
+    }
+
 
     return (
         <Container component="main" maxWidth="xs">
@@ -117,6 +130,7 @@ function Login() {
                         variant="contained"
                         color="primary"
                         className={classes.submit}
+                        onClick={loginUser}
                     >
                         Sign In
                     </Button>
