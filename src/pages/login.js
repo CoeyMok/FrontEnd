@@ -35,31 +35,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-
-
-// const handleSubmit = (event) => {
-//     //Prevent page reload
-//     event.preventDefault();
-
-//     const { uname, pass } = document.forms[0];
-
-//     // Find user login info
-//     const userData = database.find((user) => user.username === uname.value);
-
-//     // Compare user info
-//     if (userData) {
-//       if (userData.password !== pass.value) {
-//         // Invalid password
-//         setErrorMessages({ name: "pass", message: errors.pass });
-//       } else {
-//         setIsSubmitted(true);
-//       }
-//     } else {
-//       // Username not found
-//       setErrorMessages({ name: "uname", message: errors.uname });
-//     }
-//   };
-
 function Login() {
     const navigate = useNavigate();
     const classes = useStyles();
@@ -67,21 +42,13 @@ function Login() {
     const [password, setPassword] = useState();
 
     const handleSubmit = async () => {
-        // return fetch('http://localhost:3001/users/login', {
-        //     method: 'POST',
-        //     headers: {
-        //         'Content-Type': 'application/json'
-        //     },
-        //     body: JSON.stringify(credentials)
-        // })
-        //     .then(data => data.json())
-    
-        axios.post('https://localhost:3001/users/login', {
+        axios.post('http://localhost:3001/users/login', {
             username,
             password
         })
         .then(function (response) {
             if(response.status === 200){
+                localStorage.setItem('isLogined', 'Y');
                 localStorage.setItem('username', response.data.username);
                 localStorage.setItem('password', response.data.password);
                 localStorage.setItem('token', response.data.token);
@@ -89,7 +56,10 @@ function Login() {
             }
         })
         .catch(function (error) {
-            alert(error.response.data);
+            if(error.response.data !== undefined)
+                alert(error.response.data);
+            else
+                alert(error.message)
         });
     }
 
