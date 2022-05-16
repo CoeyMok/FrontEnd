@@ -7,11 +7,18 @@ import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import TableSortLabel from "@material-ui/core/TableSortLabel";
 import Paper from "@material-ui/core/Paper";
-
+import Button from '@material-ui/core/Button';
+import AddIcon from '@material-ui/icons/Add';
+import IconButton from '@material-ui/core/IconButton';
+import EditIcon from '@material-ui/icons/Edit';
+import DeleteIcon from '@material-ui/icons/DeleteOutlined';
+import SaveIcon from '@material-ui/icons/Save';
+import CancelIcon from '@material-ui/icons/Close';
+import { makeStyles } from '@material-ui/styles';
 
 function createData(number, item, qty, price) {
   return { number, item, qty, price };
-}
+}    
 
 const rows = [
   createData(1, "Apple", 5, 3),
@@ -24,19 +31,24 @@ const rows = [
 export default function SortedTable() {
   const [rowData, setRowData] = useState(rows);
   const [orderDirection, setOrderDirection] = useState("asc");
-  const [isEdit, setEdit] = React.useState(false);
+  const [selectedRows, setSelectedRows] = useState(['']);
 
-  // Function For adding new row object
-  const handleAdd = () => {
-    setRowData([
-      ...rowData,
-      {
-        id: rows.length + 1, firstname: "",
-        lastname: "", city: ""
-      },
-    ]);
-    setEdit(true);
-  };
+  // // Function For adding new row object
+  // const handleAdd = () => {
+  //   setRowData([
+  //     ...rowData,
+  //     {
+  //       id: rows.length + 1, firstname: "",
+  //       lastname: "", city: ""
+  //     },
+  //   ]);
+  //   setEdit(true);
+  // };
+
+  const handleBulkDelete = () => {
+    const updatedData = rowData.filter(row => !selectedRows.includes(row))
+    setRowData(updatedData)
+  }
 
   const sortArray = (arr, orderBy) => {
     switch (orderBy) {
@@ -67,7 +79,7 @@ export default function SortedTable() {
             <TableCell align="center">Item</TableCell>
 
             <TableCell align="center">Quantity&nbsp;(kg)</TableCell>
-
+            <button onClick={e => handleBulkDelete(rows,e)}>Delete</button>
             <TableCell align="center" onClick={handleSortRequest} >
               <TableSortLabel active={true} direction={orderDirection}>
                 Price&nbsp;($)
@@ -79,19 +91,7 @@ export default function SortedTable() {
           {rowData.map((row) => (
 
             <TableRow key={row.number}>
-              <IconButton>
-                <input
-                  type={'checkbox'}
-                  className={classes.healthCheckFormHtmlCheckBox}
-                  value={idx}
-                  onClick={(e) => {
-                    setFormScore({
-                      ...formScore,
-                      [idx]: e.target.checked,
-                    })
-                  }}
-                />
-              </IconButton>
+            
               <TableCell component="th" scope="row" align="center">
                 {row.number}
               </TableCell>
