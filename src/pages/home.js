@@ -1,108 +1,69 @@
-import React, { useState } from "react";
-import Table from "@material-ui/core/Table";
-import TableBody from "@material-ui/core/TableBody";
-import TableCell from "@material-ui/core/TableCell";
-import TableContainer from "@material-ui/core/TableContainer";
-import TableHead from "@material-ui/core/TableHead";
-import TableRow from "@material-ui/core/TableRow";
-import TableSortLabel from "@material-ui/core/TableSortLabel";
-import Paper from "@material-ui/core/Paper";
+import * as React from 'react';
+import { DataGrid, GridToolbar } from '@material-ui/data-grid';
 import Button from '@material-ui/core/Button';
 import AddIcon from '@material-ui/icons/Add';
 import IconButton from '@material-ui/core/IconButton';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/DeleteOutlined';
 import SaveIcon from '@material-ui/icons/Save';
-import CancelIcon from '@material-ui/icons/Close';
-import { makeStyles } from '@material-ui/styles';
 
-function createData(number, item, qty, price) {
-  return { number, item, qty, price };
-}    
-
-const rows = [
-  createData(1, "Apple", 5, 3),
-  createData(2, "Orange", 2, 2),
-  createData(3, "Grapes", 3, 1),
-  createData(4, "Tomato", 2, 1.6),
-  createData(5, "Mango", 1.5, 4)
+const columns = [
+  { field: 'id', headerName: 'ID', width: 90 },
+  {
+    field: 'firstName',
+    headerName: 'First name',
+    width: 150,
+    editable: true,
+  },
+  {
+    field: 'lastName',
+    headerName: 'Last name',
+    width: 150,
+    editable: true,
+  },
+  {
+    field: 'age',
+    headerName: 'Age',
+    type: 'number',
+    width: 110,
+    editable: true,
+  },
+  {
+    field: 'fullName',
+    headerName: 'Full name',
+    description: 'This column has a value getter and is not sortable.',
+    sortable: false,
+    width: 160,
+    valueGetter: (params) =>
+      `${params.getValue(params.id, 'firstName') || ''} ${
+        params.getValue(params.id, 'lastName') || ''
+      }`,
+  },
 ];
 
-export default function SortedTable() {
-  const [rowData, setRowData] = useState(rows);
-  const [orderDirection, setOrderDirection] = useState("asc");
-  const [selectedRows, setSelectedRows] = useState(['']);
+const rows = [
+  { id: 1, lastName: 'Snow', firstName: 'Jon', age: 35 },
+  { id: 2, lastName: 'Lannister', firstName: 'Cersei', age: 42 },
+  { id: 3, lastName: 'Lannister', firstName: 'Jaime', age: 45 },
+  { id: 4, lastName: 'Stark', firstName: 'Arya', age: 16 },
+  { id: 5, lastName: 'Targaryen', firstName: 'Daenerys', age: null },
+  { id: 6, lastName: 'Melisandre', firstName: null, age: 150 },
+  { id: 7, lastName: 'Clifford', firstName: 'Ferrara', age: 44 },
+  { id: 8, lastName: 'Frances', firstName: 'Rossini', age: 36 },
+  { id: 9, lastName: 'Roxie', firstName: 'Harvey', age: 65 },
+];
 
-  // // Function For adding new row object
-  // const handleAdd = () => {
-  //   setRowData([
-  //     ...rowData,
-  //     {
-  //       id: rows.length + 1, firstname: "",
-  //       lastname: "", city: ""
-  //     },
-  //   ]);
-  //   setEdit(true);
-  // };
 
-  const handleBulkDelete = () => {
-    const updatedData = rowData.filter(row => !selectedRows.includes(row))
-    setRowData(updatedData)
-  }
-
-  const sortArray = (arr, orderBy) => {
-    switch (orderBy) {
-      case "asc":
-      default:
-        return arr.sort((a, b) =>
-          a.price > b.price ? 1 : b.price > a.price ? -1 : 0
-        );
-      case "desc":
-        return arr.sort((a, b) =>
-          a.price < b.price ? 1 : b.price < a.price ? -1 : 0
-        );
-    }
-  };
-
-  const handleSortRequest = () => {
-    setRowData(sortArray(rows, orderDirection));
-    setOrderDirection(orderDirection === "asc" ? "desc" : "asc");
-  };
-
+export default function DataTable() {
   return (
-    <TableContainer component={Paper}>
-      <Table aria-label="simple table">
-        <TableHead>
-          <TableRow>
-            <TableCell align="center">S.No</TableCell>
-
-            <TableCell align="center">Item</TableCell>
-
-            <TableCell align="center">Quantity&nbsp;(kg)</TableCell>
-            <button onClick={e => handleBulkDelete(rows,e)}>Delete</button>
-            <TableCell align="center" onClick={handleSortRequest} >
-              <TableSortLabel active={true} direction={orderDirection}>
-                Price&nbsp;($)
-              </TableSortLabel>
-            </TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {rowData.map((row) => (
-
-            <TableRow key={row.number}>
-            
-              <TableCell component="th" scope="row" align="center">
-                {row.number}
-              </TableCell>
-              <TableCell align="center">{row.item}</TableCell>
-              <TableCell align="center">{row.qty}</TableCell>
-              <TableCell align="center">{row.price}</TableCell>
-
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
+    <div style={{ height: 400, width: '100%' }}>
+      <DataGrid
+        rows={rows}
+        columns={columns}
+        pageSize={5}
+        checkboxSelection
+        disableSelectionOnClick
+      />
+    </div>
   );
 }
