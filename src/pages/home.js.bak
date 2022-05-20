@@ -12,12 +12,7 @@ import {
   DataGridPro,
   GridToolbarContainer,
 } from '@mui/x-data-grid-pro';
-import {
-  randomCreatedDate,
-  randomTraderName,
-  randomUpdatedDate,
-  randomId,
-} from '@mui/x-data-grid-generator';
+
 import { createTheme } from '@material-ui/core/styles';
 import { makeStyles } from '@material-ui/styles';
 
@@ -126,40 +121,40 @@ RowMenuCell.propTypes = {
 
 const rows = [
   {
-    id: randomId(),
-    name: randomTraderName(),
+    id: 1,
+    name: 'abc',
     age: 25,
     breed: 'puddle',
     weight: 27,
     height: 11
   },
   {
-    id: randomId(),
-    name: randomTraderName(),
+    id: 1,
+    name: 'abc',
     age: 36,
     breed: 11,
     weight: 36,
     height: 11
   },
   {
-    id: randomId(),
-    name: randomTraderName(),
+    id: 1,
+    name: 'abc',
     age: 19,
     breed: 11,
     weight: 36,
     height: 11
   },
   {
-    id: randomId(),
-    name: randomTraderName(),
+    id: 1,
+    name: 'abc',
     age: 28,
     breed: 2,
     weight: 36,
     height: 11
   },
   {
-    id: randomId(),
-    name: randomTraderName(),
+    id: 1,
+    name: 'abc',
     age: 23,
     breed: 1,
     weight: 36,
@@ -196,7 +191,7 @@ function EditToolbar(props) {
   const { apiRef } = props;
 
   const handleClick = () => {
-    const id = randomId();
+    const id = 1;
     apiRef.current.updateRows([{ id, isNew: true }]);
     apiRef.current.setRowMode(id, 'edit');
     // Wait for the grid to render with the new row
