@@ -1,63 +1,51 @@
 import React, { useState, useEffect } from 'react';
-import { DataGrid } from '@mui/x-data-grid';
+import { DataGrid,useGridApiRef } from '@mui/x-data-grid';
 import axios from 'axios';
 import { useNavigate } from "react-router-dom";
 
-const columns = [
-    { field: 'id', headerName: 'ID', width: 90 },
-    {
-      field: 'name',
-      headerName: 'name',
-      width: 160,
-      editable: true,
-    },
-    {
-      field: 'age',
-      headerName: 'age',
-      type: 'number',
-      width: 150,
-      editable: true,
-    },
-    {
-      field: 'breeds',
-      headerName: 'breeds',
-      width: 150,
-      editable: true,
-    },
-    {
-      field: 'height',
-      headerName: 'height',
-      type: 'number',
-      width: 110,
-      editable: true,
-    },
-    {
-        field: 'weight',
-        headerName: 'weight',
-        type: 'number',
-        width: 110,
-        editable: true,
-    },
-  ];
 
-
-  
-//   const rows = [
-//     { id: 1, lastName: 'Snow', firstName: 'Jon', age: 35 },
-//     { id: 2, lastName: 'Lannister', firstName: 'Cersei', age: 42 },
-//     { id: 3, lastName: 'Lannister', firstName: 'Jaime', age: 45 },
-//     { id: 4, lastName: 'Stark', firstName: 'Arya', age: 16 },
-//     { id: 5, lastName: 'Targaryen', firstName: 'Daenerys', age: null },
-//     { id: 6, lastName: 'Melisandre', firstName: null, age: 150 },
-//     { id: 7, lastName: 'Clifford', firstName: 'Ferrara', age: 44 },
-//     { id: 8, lastName: 'Frances', firstName: 'Rossini', age: 36 },
-//     { id: 9, lastName: 'Roxie', firstName: 'Harvey', age: 65 },
-//   ];
 
 function Homepage() {
     const navigate = useNavigate();
     const [rows,setRows] = useState([]);
     const [isLogined,setIsLogined] = useState(false);
+
+    const columns = [
+      { field: 'id', headerName: 'ID', width: 90 },
+      {
+        field: 'name',
+        headerName: 'name',
+        width: 160,
+        editable: isLogined,
+      },
+      {
+        field: 'age',
+        headerName: 'age',
+        type: 'number',
+        width: 150,
+        editable: isLogined,
+      },
+      {
+        field: 'breeds',
+        headerName: 'breeds',
+        width: 150,
+        editable: isLogined,
+      },
+      {
+        field: 'height',
+        headerName: 'height',
+        type: 'number',
+        width: 110,
+        editable: isLogined,
+      },
+      {
+          field: 'weight',
+          headerName: 'weight',
+          type: 'number',
+          width: 110,
+          editable: isLogined,
+      },
+    ];
 
     const fetchData = () => {
         axios.get('http://localhost:3001/dogs').then(
@@ -66,6 +54,23 @@ function Homepage() {
             }
         )
     }
+
+    const handleCellEditCommit = React.useCallback(
+      ({ id, field, value }) => {
+        axios.put(`http://localhost:3001/dogs/${id}`,{[field]:value}, {
+          headers: {
+            'token': localStorage.getItem('token')
+          }
+        })
+        .then(res => {
+          if(res.status === 200){
+            fetchData();
+          }
+        })
+        .catch(err => alert(err));
+      },
+      [rows],
+    );
 
     const login  =  () => {
         navigate("/login");
@@ -98,8 +103,8 @@ function Homepage() {
                 columns={columns}
                 pageSize={5}
                 rowsPerPageOptions={[5]}
-                checkboxSelection
                 disableSelectionOnClick
+                onCellEditCommit={handleCellEditCommit}
             />
             </div>
         </React.Fragment>
