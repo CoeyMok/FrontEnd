@@ -6,18 +6,14 @@ import reportWebVitals from './reportWebVitals';
 import App from './App';
 import Login from './pages/login';
 import Homepage from './pages/homepage'
-
+import SignupForm from './pages/SignupForm'
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <BrowserRouter>
     <Routes>
          <Route path="/" element={<Homepage/>} />
          <Route path="/login" element={<Login/>}/>
+         <Route path="/signup" element={<SignupForm />}/>
     </Routes>
   </BrowserRouter>
 );
-
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-//reportWebVitals();
