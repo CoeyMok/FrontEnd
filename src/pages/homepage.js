@@ -11,7 +11,8 @@ const useStyles = makeStyles(() => ({
      display: 'flex',
      flexDirection: 'row',
      padding: '15px 10px',
-     columnGap: 15
+     columnGap: 15,
+     'justify-content': 'flex-end'
   },
 }))
 
@@ -107,11 +108,9 @@ function Homepage() {
         <React.Fragment>
             <div className={classes.buttonContainer}>
                 {isLogined ? <div> Hello, {localStorage.getItem('username')}  <button onClick={logout}>Logout</button> </div> : <button onClick={login}>Login</button>} 
-                   {/* <a href={}> */}
-            <AddIcon fontSize="large" />
-            {/* </a> */}
+                
             </div>
-         
+            {isLogined && <AddIcon style={{ cursor: 'pointer'}} fontSize="large" onClick={ () => { navigate("/add")}}/> }
             <div style={{ height: 400, width: '100%' }}>
             <DataGrid
                 rows={rows}
