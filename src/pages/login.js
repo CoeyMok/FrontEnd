@@ -1,4 +1,4 @@
-import {React, useState} from 'react';
+import { React, useState } from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -46,23 +46,22 @@ function Login() {
             username,
             password
         })
-        .then(function (response) {
-            if(response.status === 200){
-                localStorage.setItem('isLogined', 'Y');
-                localStorage.setItem('username', response.data.username);
-                localStorage.setItem('password', response.data.password);
-                localStorage.setItem('token', response.data.token);
-                navigate("/");
-            }
-        })
-        .catch(function (error) {
-            if(error.response.data !== undefined)
-                alert(error.response.data);
-            else
-                alert(error.message)
-        });
+            .then(function (response) {
+                if (response.status === 200) {
+                    localStorage.setItem('isLogined', 'Y');
+                    localStorage.setItem('username', response.data.username);
+                    localStorage.setItem('password', response.data.password);
+                    localStorage.setItem('token', response.data.token);
+                    navigate("/");
+                }
+            })
+            .catch(function (error) {
+                if (error.response.data !== undefined)
+                    alert(error.response.data);
+                else
+                    alert(error.message)
+            });
     }
-
 
     return (
         <Container component="main" maxWidth="xs">
@@ -73,57 +72,56 @@ function Login() {
                 <Typography component="h1" variant="h5">
                     Please Sign In
                 </Typography>
-               
-                    <TextField
-                        variant="outlined"
-                        margin="normal"
-                        required
-                        fullWidth
-                        id="Username"
-                        label="Username"
-                        name="Username"
-                        autoComplete="Username"
-                        autoFocus
-                        onChange={e => setUserName(e.target.value)}
-                    />
-                    <TextField
-                        variant="outlined"
-                        margin="normal"
-                        required
-                        fullWidth
-                        name="password"
-                        label="Password"
-                        type="password"
-                        id="password"
-                        // autoComplete="current-password"
-                        onChange={e => setPassword(e.target.value)}
-                    />
-                    <FormControlLabel
-                        control={<Checkbox value="remember" color="primary" />}
-                        label="Remember me"
-                    />
-                    <Button 
-                        fullWidth
-                        variant="contained"
-                        color="primary"
-                        className={classes.submit}
-                        onClick={handleSubmit}
-                    >
-                        Sign In
-                    </Button>
-                    <Grid container>
-                        <Grid item xs>
-                            <Link href="#" variant="body2">
-                                Forgot password?
-                            </Link>
-                        </Grid>
-                        <Grid item>
-                            <Link href="#" variant="body2">
-                                {"Don't have an account? Sign Up"}
-                            </Link>
-                        </Grid>
+
+                <TextField
+                    variant="outlined"
+                    margin="normal"
+                    required
+                    fullWidth
+                    id="Username"
+                    label="Username"
+                    name="Username"
+                    autoComplete="Username"
+                    autoFocus
+                    onChange={e => setUserName(e.target.value)}
+                />
+                <TextField
+                    variant="outlined"
+                    margin="normal"
+                    required
+                    fullWidth
+                    name="password"
+                    label="Password"
+                    type="password"
+                    id="password"
+                    // autoComplete="current-password"
+                    onChange={e => setPassword(e.target.value)}
+                />
+                <FormControlLabel
+                    control={<Checkbox value="remember" color="primary" />}
+                    label="Remember me"
+                />
+                <Button
+                    fullWidth
+                    variant="contained"
+                    color="primary"
+                    className={classes.submit}
+                    onClick={handleSubmit}
+                >
+                    Sign In
+                </Button>
+                <Grid container>
+                    <Grid item xs>
+                        <Link href="#" variant="body2">
+                            Forgot password?
+                        </Link>
                     </Grid>
-               
+                    <Grid item>
+                        <Link href="#" variant="body2" onClick={() => { navigate("/signup") }}>
+                            {"Don't have an account? Sign Up"}
+                        </Link>
+                    </Grid>
+                </Grid>
             </div>
             <Box mt={8}>
             </Box>

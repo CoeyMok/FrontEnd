@@ -97,7 +97,6 @@ function Homepage() {
     }
     
     useEffect(() => {
-
         setIsLogined(localStorage.getItem('isLogined')==='Y'? true: false);
         fetchData();
       },[]);
@@ -108,7 +107,6 @@ function Homepage() {
         <React.Fragment>
             <div className={classes.buttonContainer}>
                 {isLogined ? <div> Hello, {localStorage.getItem('username')}  <button onClick={logout}>Logout</button> </div> : <button onClick={login}>Login</button>} 
-                
             </div>
             {isLogined && <AddIcon style={{ cursor: 'pointer'}} fontSize="large" onClick={ () => { navigate("/add")}}/> }
             <div style={{ height: 400, width: '100%' }}>
@@ -119,7 +117,6 @@ function Homepage() {
                 rowsPerPageOptions={[5]}
                 disableSelectionOnClick
                 onCellEditCommit={handleCellEditCommit}
-
             />
             </div>
         </React.Fragment>
