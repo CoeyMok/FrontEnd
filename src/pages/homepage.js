@@ -2,45 +2,56 @@ import React, { useState, useEffect } from 'react';
 import { DataGrid,useGridApiRef } from '@mui/x-data-grid';
 import axios from 'axios';
 import { useNavigate } from "react-router-dom";
+import Icon from '@material-ui/core/Icon';
+import AddIcon from '@mui/icons-material/Add';
+import { makeStyles } from '@material-ui/core/styles'
 
-
+const useStyles = makeStyles(() => ({
+  buttonContainer: {
+     display: 'flex',
+     flexDirection: 'row',
+     padding: '15px 10px',
+     columnGap: 15
+  },
+}))
 
 function Homepage() {
     const navigate = useNavigate();
     const [rows,setRows] = useState([]);
     const [isLogined,setIsLogined] = useState(false);
+    const classes = useStyles();
 
     const columns = [
       { field: 'id', headerName: 'ID', width: 90 },
       {
         field: 'name',
-        headerName: 'name',
+        headerName: 'Name',
         width: 160,
         editable: isLogined,
       },
       {
         field: 'age',
-        headerName: 'age',
+        headerName: 'Age',
         type: 'number',
         width: 150,
         editable: isLogined,
       },
       {
         field: 'breeds',
-        headerName: 'breeds',
+        headerName: 'Breeds',
         width: 150,
         editable: isLogined,
       },
       {
         field: 'height',
-        headerName: 'height',
+        headerName: 'Height',
         type: 'number',
         width: 110,
         editable: isLogined,
       },
       {
           field: 'weight',
-          headerName: 'weight',
+          headerName: 'Weight',
           type: 'number',
           width: 110,
           editable: isLogined,
@@ -94,9 +105,13 @@ function Homepage() {
 
     return (
         <React.Fragment>
-            <div>
+            <div className={classes.buttonContainer}>
                 {isLogined ? <div> Hello, {localStorage.getItem('username')}  <button onClick={logout}>Logout</button> </div> : <button onClick={login}>Login</button>} 
+                   {/* <a href={}> */}
+            <AddIcon fontSize="large" />
+            {/* </a> */}
             </div>
+         
             <div style={{ height: 400, width: '100%' }}>
             <DataGrid
                 rows={rows}
@@ -105,6 +120,7 @@ function Homepage() {
                 rowsPerPageOptions={[5]}
                 disableSelectionOnClick
                 onCellEditCommit={handleCellEditCommit}
+
             />
             </div>
         </React.Fragment>
